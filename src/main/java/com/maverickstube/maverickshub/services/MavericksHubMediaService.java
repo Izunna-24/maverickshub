@@ -34,7 +34,8 @@ public class MavericksHubMediaService implements MediaService {
     User user = mavericksHubUserService.getById(request.getUserId());
         try {
             Uploader uploader = cloudinary.uploader();
-            Map<?, ?> response = uploader.upload(request.getMediaFile().getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+            Map<?, ?> response = uploader.upload(request.getMediaFile()
+                    .getBytes(), ObjectUtils.asMap("resource_type", "auto"));
             String url = response.get("url").toString();
             Media media = modelMapper.map(request, Media.class);
             media.setUrl(url);
