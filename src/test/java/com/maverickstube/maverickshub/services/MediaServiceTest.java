@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.maverickstube.maverickshub.models.Category.ACTION;
+import static com.maverickstube.maverickshub.models.Category.ROMANCE;
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_IMAGE_LOCATION;
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,8 +81,17 @@ class MediaServiceTest {
     @Test
     @DisplayName("test that media can be updated")
     public void testUpdateMedia(){
-
+    UpdateMediaRequest updateMediaRequest = new UpdateMediaRequest();
+    Media media = new Media();
+    User user = new User();
+    updateMediaRequest.setMedia(media);
+    media.setUploader(user);
+    media.setDescription("");
+    media.setCategory(ROMANCE);
+    UpdateMediaResponse updateMediaResponse = mediaService.updateMedia(updateMediaRequest);
     }
+
+
     @Test
     public void getMediaByIdTest(){
        Media media =  mediaService.getMediaBy(101L);
