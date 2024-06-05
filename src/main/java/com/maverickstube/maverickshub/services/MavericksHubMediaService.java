@@ -3,7 +3,9 @@ package com.maverickstube.maverickshub.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Uploader;
 import com.cloudinary.utils.ObjectUtils;
+import com.maverickstube.maverickshub.dataTransferObjects.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UploadMediaRequest;
+import com.maverickstube.maverickshub.dataTransferObjects.responses.UpdateMediaResponse;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UploadMediaResponse;
 import com.maverickstube.maverickshub.exceptions.MediaNotFoundException;
 import com.maverickstube.maverickshub.exceptions.MediaUploadFailedException;
@@ -53,5 +55,13 @@ public class MavericksHubMediaService implements MediaService {
     public Media getMediaBy(long id) {
         return mediaRepository.findById(id)
                 .orElseThrow(() -> new MediaNotFoundException("media not found"));
+    }
+
+    @Override
+    public UpdateMediaResponse updateMedia(UpdateMediaRequest updateMediaRequest) {
+        Media media = getMediaBy(updateMediaRequest.getMediaID());
+        modelMapper.map(updateMediaRequest, media);
+        Media mediaUpdate =  mediaRepository.save(media);
+        return modelMapper.map(mediaUpdate, UpdateMediaResponse.class);
     }
 }
