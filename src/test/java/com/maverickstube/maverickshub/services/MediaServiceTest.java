@@ -23,8 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.maverickstube.maverickshub.models.Category.*;
-import static com.maverickstube.maverickshub.utils.TestUtils.TEST_IMAGE_LOCATION;
-import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
+import static com.maverickstube.maverickshub.utils.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -34,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MediaServiceTest {
     @Autowired
     private MediaService mediaService;
+
 
     @Test
 
@@ -91,10 +91,16 @@ class MediaServiceTest {
 
 //    @Test
 //    @DisplayName("test that media can be updated")
-//    public void testUpdateMedia2(){
-//        UpdateMediaRequest updateMediaRequest = new UpdateMediaRequest();
-//        updateMediaRequest.setCategory(SCI_FI);
-//        mediaService.updateMedia(103L,updateMediaRequest);
+//    public void testUpdateMedia2() throws JsonPointerException{
+//        Category category = mediaService.getMediaBy(103L).getCategory();
+//      assertThat(category).isNotEqualTo(STEP_MOM);
+//       List<JsonPatchOperation> operations = List.of(
+//       new ReplaceOperation(new JsonPointer("/category"),
+//        new TextMode(STEP_MOM.name()))
+//       );
+//       JsonPatch updateMediaRequest = new JsonPatch(operations);
+//      UpdateMediaResponse response = mediaService.updateMedia(103L, updateMediaRequest);
+//
 //    }
 
     @Test
@@ -106,18 +112,11 @@ class MediaServiceTest {
 
     }
 
-    private static UploadMediaRequest buildUploadMediaRequest(InputStream inputStream) throws IOException{
-        UploadMediaRequest request = new UploadMediaRequest();
-        MultipartFile file = new MockMultipartFile("funnyShorts", inputStream);
-        request.setMediaFile(file);
-        request.setUserId(201L);
-        request.setCategory(ACTION);
-        return request;
 
 
     }
 
-}
+
 
 
 
