@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockPart;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Sql(scripts = {"/db/data.sql"})
 class MediaControllerTest {
 
     @Autowired
@@ -34,7 +36,6 @@ class MediaControllerTest {
 
     @Test
     public void testUploadMedia() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
         try (InputStream inputStream = Files.newInputStream(Path.of(TEST_VIDEO_LOCATION))) {
             MultipartFile file = new MockMultipartFile("mediaFile", inputStream);
             mockMvc.perform(multipart("/api/v1/media")
