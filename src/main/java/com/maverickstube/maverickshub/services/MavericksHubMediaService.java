@@ -3,6 +3,10 @@ package com.maverickstube.maverickshub.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Uploader;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UpdateMediaResponse;
@@ -64,4 +68,20 @@ public class MavericksHubMediaService implements MediaService {
         Media mediaUpdate =  mediaRepository.save(media);
         return modelMapper.map(mediaUpdate, UpdateMediaResponse.class);
     }
+
+
+//    public UpdateMediaResponse updateMedia(Long mediaId, JsonPatch jsonPatch){
+//        Media media = getMediaBy(mediaId);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode mediaNode = objectMapper.convertValue(media,JsonNode.class);
+//        mediaNode = jsonPatch.apply(mediaNode);
+//        media = objectMapper.convertValue(mediaNode, Media.class);
+//        media = mediaRepository.save(media);
+//
+//        return modelMapper.map(media, UpdateMediaResponse.class);
+//
+//    }catch (JsonPatchException exception){
+//
+//    }
+//}
 }
