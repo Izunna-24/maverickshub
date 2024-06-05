@@ -1,6 +1,8 @@
 package com.maverickstube.maverickshub.services;
 
+import com.maverickstube.maverickshub.dataTransferObjects.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UploadMediaRequest;
+import com.maverickstube.maverickshub.dataTransferObjects.responses.UpdateMediaResponse;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UploadMediaResponse;
 import com.maverickstube.maverickshub.models.Category;
 import com.maverickstube.maverickshub.models.Media;
@@ -20,8 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.maverickstube.maverickshub.models.Category.ACTION;
-import static com.maverickstube.maverickshub.models.Category.ROMANCE;
+import static com.maverickstube.maverickshub.models.Category.*;
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_IMAGE_LOCATION;
 import static com.maverickstube.maverickshub.utils.TestUtils.TEST_VIDEO_LOCATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,6 +68,44 @@ class MediaServiceTest {
 
     }
 
+
+    @Test
+    @DisplayName("test that media can be updated")
+    public void testUpdateMedia() throws IOException {
+    UpdateMediaRequest updateMediaRequest = new UpdateMediaRequest();
+    Media media = mediaService.getMediaBy(101L);
+    assertThat(media.getCategory()).isEqualTo(ROMANCE);
+    assertThat(media.getDescription()).isEqualTo("media 2");
+
+    updateMediaRequest.setMediaID(101L);
+    updateMediaRequest.setCategory(STEP_MOM);
+    updateMediaRequest.setDescription("All games when alone");
+
+    UpdateMediaResponse updateMediaResponse = mediaService.updateMedia(updateMediaRequest);
+    log.info("updated media -> {}", updateMediaResponse);
+    assertThat(updateMediaResponse).isNotNull();
+    media = mediaService.getMediaBy(101L);
+    assertThat(media.getCategory()).isEqualTo(STEP_MOM);
+    assertThat(media.getDescription()).isEqualTo("All games when alone");
+    }
+
+//    @Test
+//    @DisplayName("test that media can be updated")
+//    public void testUpdateMedia2(){
+//        UpdateMediaRequest updateMediaRequest = new UpdateMediaRequest();
+//        updateMediaRequest.setCategory(SCI_FI);
+//        mediaService.updateMedia(103L,updateMediaRequest);
+//    }
+
+    @Test
+    public void getMediaByIdTest(){
+       Media media =  mediaService.getMediaBy(101L);
+       log.info("found content -> {}", media);
+        assertThat(media).isNotNull();
+
+
+    }
+
     private static UploadMediaRequest buildUploadMediaRequest(InputStream inputStream) throws IOException{
         UploadMediaRequest request = new UploadMediaRequest();
         MultipartFile file = new MockMultipartFile("funnyShorts", inputStream);
@@ -78,28 +117,6 @@ class MediaServiceTest {
 
     }
 
-    @Test
-    @DisplayName("test that media can be updated")
-    public void testUpdateMedia(){
-    UpdateMediaRequest updateMediaRequest = new UpdateMediaRequest();
-    Media media = new Media();
-    User user = new User();
-    updateMediaRequest.setMedia(media);
-    media.setUploader(user);
-    media.setDescription("");
-    media.setCategory(ROMANCE);
-    UpdateMediaResponse updateMediaResponse = mediaService.updateMedia(updateMediaRequest);
-    }
-
-
-    @Test
-    public void getMediaByIdTest(){
-       Media media =  mediaService.getMediaBy(101L);
-       log.info("found content -> {}", media);
-        assertThat(media).isNotNull();
-
-
-    }
 }
 
 
