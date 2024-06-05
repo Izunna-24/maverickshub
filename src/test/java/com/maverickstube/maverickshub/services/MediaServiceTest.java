@@ -2,6 +2,7 @@ package com.maverickstube.maverickshub.services;
 
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UploadMediaRequest;
+import com.maverickstube.maverickshub.dataTransferObjects.responses.MediaResponse;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UpdateMediaResponse;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UploadMediaResponse;
 import com.maverickstube.maverickshub.models.Category;
@@ -21,6 +22,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static com.maverickstube.maverickshub.models.Category.*;
 import static com.maverickstube.maverickshub.utils.TestUtils.*;
@@ -112,8 +114,12 @@ class MediaServiceTest {
 
     }
 
-
-
+    @Test
+    public void getMediaForUserTest(){
+        Long userId = 200L;
+        List<MediaResponse> media = mediaService.getMediaFor(userId);
+        assertThat(media).hasSize(3);
+    }
     }
 
 
