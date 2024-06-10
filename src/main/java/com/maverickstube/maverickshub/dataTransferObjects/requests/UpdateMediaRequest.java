@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class UpdateMediaRequest {
-    private Long mediaID;
+    private Long mediaId;
     private String description;
     private Category category;
 }
