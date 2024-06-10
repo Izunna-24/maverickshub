@@ -1,24 +1,29 @@
 package com.maverickstube.maverickshub.services;
 
+
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UpdateMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.UploadMediaRequest;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.MediaResponse;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UpdateMediaResponse;
+import com.maverickstube.maverickshub.dataTransferObjects.responses.UpdateMediaResponse2;
 import com.maverickstube.maverickshub.dataTransferObjects.responses.UploadMediaResponse;
 import com.maverickstube.maverickshub.models.Category;
 import com.maverickstube.maverickshub.models.Media;
-import com.maverickstube.maverickshub.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,7 +84,7 @@ class MediaServiceTest {
     assertThat(media.getCategory()).isEqualTo(ROMANCE);
     assertThat(media.getDescription()).isEqualTo("media 2");
 
-    updateMediaRequest.setMediaID(101L);
+    updateMediaRequest.setMediaId(101L);
     updateMediaRequest.setCategory(STEP_MOM);
     updateMediaRequest.setDescription("All games when alone");
 
@@ -91,19 +96,24 @@ class MediaServiceTest {
     assertThat(media.getDescription()).isEqualTo("All games when alone");
     }
 
-//    @Test
-//    @DisplayName("test that media can be updated")
-//    public void testUpdateMedia2() throws JsonPointerException{
-//        Category category = mediaService.getMediaBy(103L).getCategory();
-//      assertThat(category).isNotEqualTo(STEP_MOM);
-//       List<JsonPatchOperation> operations = List.of(
-//       new ReplaceOperation(new JsonPointer("/category"),
-//        new TextMode(STEP_MOM.name()))
-//       );
-//       JsonPatch updateMediaRequest = new JsonPatch(operations);
-//      UpdateMediaResponse response = mediaService.updateMedia(103L, updateMediaRequest);
-//
-//    }
+    @Test
+    @DisplayName("test that media can be updated")
+    public void testUpdateMedia2() throws JsonPointerException{
+        Category category = mediaService.getMediaBy(103L).getCategory();
+      assertThat(category).isEqualTo(COMEDY);
+
+       List<JsonPatchOperation> operations = List.of(
+       new ReplaceOperation(new JsonPointer("/category"),
+        new TextNode(ACTION.name())));
+
+        JsonPatch updateMediaRequest = new JsonPatch(operations);
+        UpdateMediaResponse2 response2 = mediaService.updateMedia2(103L, updateMediaRequest);
+        System.out.println(response2);
+        assertThat(response2).isNotNull();
+        assertThat(category).isNotNull();
+        category = mediaService.getMediaBy(103L).getCategory();
+        assertThat(category).isEqualTo(ACTION);
+    }
 
     @Test
     public void getMediaByIdTest(){
