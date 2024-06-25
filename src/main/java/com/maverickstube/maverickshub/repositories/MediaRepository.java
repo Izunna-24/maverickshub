@@ -9,4 +9,6 @@ import java.util.List;
 public interface MediaRepository extends JpaRepository<Media, Long> {
     @Query("SELECT m FROM Media m where m.uploader.id =:userId")
     List<Media> findAllMediaFor(Long userId);
+
+
 }

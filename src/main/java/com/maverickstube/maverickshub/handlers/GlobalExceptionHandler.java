@@ -3,6 +3,7 @@ package com.maverickstube.maverickshub.handlers;
 
 
 import com.maverickstube.maverickshub.exceptions.MediaUploadFailedException;
+import com.maverickstube.maverickshub.exceptions.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,5 +21,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(BAD_REQUEST)
                 .body(Map.of("error", exception.getMessage(),
                         "success",false));
+
+
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handlerUserNotFound(UserNotFoundException exception){
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(Map.of("error",exception.getMessage(),"success",false));
     }
 }

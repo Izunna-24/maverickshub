@@ -63,4 +63,18 @@ class MediaControllerTest {
             }
         }
 
+
+
+    @Test
+    public void testGetMediaForUserShouldFailForInvalidUserId(){
+        try{
+            mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/media?userId=2000")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andDo(print());
+        }catch (Exception exception){
+            assertThat(exception).isNull();
+        }
+    }
+
 }

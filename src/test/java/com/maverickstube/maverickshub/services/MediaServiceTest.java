@@ -43,7 +43,6 @@ class MediaServiceTest {
 
 
     @Test
-
     public void uploadMediaPhotoTest() {
         Path path = Paths.get(TEST_IMAGE_LOCATION);
         try (var inputStream = Files.newInputStream(path)) {
