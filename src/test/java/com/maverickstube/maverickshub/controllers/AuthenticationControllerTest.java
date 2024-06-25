@@ -1,7 +1,6 @@
 package com.maverickstube.maverickshub.controllers;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maverickstube.maverickshub.dataTransferObjects.requests.LoginRequest;
 import org.junit.jupiter.api.Test;
